@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "hapi.js plugin which provides some basic functionality which can be useful when running a hapi.js site on Heroku.",
   "main": "lib/index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "lab -a code -v -t 100 -L"
   },
@@ -17,14 +14,15 @@
     "heroku",
     "https"
   ],
-  "author": "",
   "license": "MIT",
   "dependencies": {
+    "good": "^6.3.0",
     "hapi": "^9.0.0",
     "hoek": "^2.14.0",
     "joi": "^6.6.1"
   },
   "devDependencies": {
+    "code": "^1.5.0",
     "lab": "^5.15.2"
   }
 }
