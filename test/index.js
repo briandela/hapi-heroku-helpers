@@ -114,7 +114,7 @@ describe('redirectHttpToHttps', function () {
             server.connection();
 
             server.route({
-                method: 'GET',
+                method: ['GET', 'POST'],
                 path: '/',
                 handler: function (request, reply) {
 
@@ -139,6 +139,24 @@ describe('redirectHttpToHttps', function () {
 
                 expect(res.statusCode).to.equal(301);
                 expect(res.headers.location).to.startWith('https://');
+
+                done();
+            });
+        });
+
+        it('does not redirect POST requests even then when x-forwarded-proto is http', function (done) {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/',
+                headers: {
+                    'x-forwarded-proto': 'http'
+                }
+            };
+
+            server.inject(requestOptions, function (res) {
+
+                expect(res.statusCode).to.equal(200);
 
                 done();
             });
