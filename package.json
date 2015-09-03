@@ -1,6 +1,6 @@
 {
   "name": "hapi-heroku-helpers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "git://github.com/briandela/hapi-heroku-helpers",
   "description": "hapi.js plugin which provides some basic functionality which can be useful when running a hapi.js site on Heroku.",
   "main": "lib/index.js",
@@ -17,7 +17,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "good": "^6.3.0",
     "hapi": "^9.0.0",
     "hoek": "^2.14.0",
     "joi": "^6.6.1"

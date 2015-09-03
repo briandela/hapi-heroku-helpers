@@ -1,4 +1,4 @@
-#Hapi Heroku Helpers#
+# Hapi Heroku Helpers #
 
 [![Build Status](https://travis-ci.org/briandela/hapi-heroku-helpers.svg?branch=master)](https://travis-ci.org/briandela/hapi-heroku-helpers) [![Coverage Status](https://img.shields.io/coveralls/briandela/hapi-heroku-helpers.svg)](https://coveralls.io/r/briandela/hapi-heroku-helpers) [![Dependencies Up To Date](https://david-dm.org/briandela/hapi-heroku-helpers.svg?style=flat)](https://david-dm.org/briandela/hapi-heroku-helpers)
 
