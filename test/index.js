@@ -122,6 +122,15 @@ describe('redirectHttpToHttps', function () {
                 }
             });
 
+            server.route({
+                method: ['GET', 'POST'],
+                path: '/somepath',
+                handler: function (request, reply) {
+
+                    return reply(true);
+                }
+            });
+
             server.register(require('..'), done);
         });
 
@@ -139,6 +148,27 @@ describe('redirectHttpToHttps', function () {
 
                 expect(res.statusCode).to.equal(301);
                 expect(res.headers.location).to.startWith('https://');
+
+                done();
+            });
+        });
+
+        it('redirects contain path and query string', function (done) {
+
+            var url = '/human?spud=ada';
+            var requestOptions = {
+                method: 'GET',
+                url: url,
+                headers: {
+                    'x-forwarded-proto': 'http'
+                }
+            };
+
+            server.inject(requestOptions, function (res) {
+
+                expect(res.statusCode).to.equal(301);
+                expect(res.headers.location).to.startWith('https://');
+                expect(res.headers.location).to.endWith(url);
 
                 done();
             });
