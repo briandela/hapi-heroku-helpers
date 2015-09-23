@@ -46,3 +46,10 @@ server.register(require('hapi-heroku-helpers'), function (err) {
     });
 });
 ```
+
+### Example App
+
+There is an example heroku hapi app which uses this plugin here: (https://github.com/briandela/hapi-heroku-helpers-example)
+
+You can deploy it directly to your heroku account by clicking the button below:
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/briandela/hapi-heroku-helpers-example)
