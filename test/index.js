@@ -1,61 +1,29 @@
 'use strict';
 
-var Lab = require('lab');
-var Hapi = require('hapi');
-var Code = require('code');
+const Lab = require('lab');
+const Hapi = require('hapi');
+const Code = require('code');
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
-var before = lab.before;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
+const before = lab.before;
 
-var internals = {};
-
-internals.getAllPlugins = function (server) {
-
-    // Adapted from:
-    // https://github.com/danielb2/hapi-info/blob/73f19e93ca9e835a87946aced27f24987eff459d/lib/index.js
-
-    var plugins = [];
-
-    for (var i = 0, il = server._sources.length; i < il; ++i) {
-
-        var source = server._sources[i];
-
-        if (!source._registrations) {
-            continue;
-        }
-
-        var registrations = Object.keys(source._registrations);
-
-        for (var j = 0, ij = registrations.length; j < ij; ++j) {
-
-            var pluginKey = registrations[j];
-            var plugin = source._registrations[pluginKey];
-
-            plugins.push({ name: plugin.name, version: plugin.version });
-        }
-    }
-
-    return plugins;
-};
 
 describe('Plugin registration', function () {
 
     it('successfully registers without requiring options', function (done) {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
         server.connection();
 
         server.register(require('..'), function (err) {
 
             expect(err).to.not.exist();
 
-            var allPlugins = internals.getAllPlugins(server);
-
-            expect(allPlugins).to.be.an.array();
-            expect(allPlugins).to.have.length(1);
+            expect(server.registrations['hapi-heroku-helpers']).to.exist();
+            expect(server.registrations['hapi-heroku-helpers'].version).to.equal(require('../package.json').version);
 
             done();
         });
@@ -63,10 +31,10 @@ describe('Plugin registration', function () {
 
     it('asserts if there are invalid options', function (done) {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
         server.connection();
 
-        var plugin = {
+        const plugin = {
             register: require('..'),
             options: 'weird options'
         };
@@ -81,10 +49,10 @@ describe('Plugin registration', function () {
 
     it('asserts if there is nothing for the plugin to do', function (done) {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
         server.connection();
 
-        var plugin = {
+        const plugin = {
             register: require('..'),
             options: {
                 redirectHttpToHttps: false,
@@ -106,7 +74,7 @@ describe('redirectHttpToHttps', function () {
 
     describe('enabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -136,7 +104,7 @@ describe('redirectHttpToHttps', function () {
 
         it('redirects to https when x-forwarded-proto is http', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -155,10 +123,10 @@ describe('redirectHttpToHttps', function () {
 
         it('redirects contain path and query string', function (done) {
 
-            var url = '/human?spud=ada';
-            var requestOptions = {
+            const url = '/human?spud=ada';
+            const requestOptions = {
                 method: 'GET',
-                url: url,
+                url,
                 headers: {
                     'x-forwarded-proto': 'http'
                 }
@@ -176,7 +144,7 @@ describe('redirectHttpToHttps', function () {
 
         it('does not redirect POST requests even then when x-forwarded-proto is http', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'POST',
                 url: '/',
                 headers: {
@@ -194,7 +162,7 @@ describe('redirectHttpToHttps', function () {
 
         it('does not redirect to https when x-forwarded-proto is not http', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -212,7 +180,7 @@ describe('redirectHttpToHttps', function () {
 
         it('does not redirect to https when x-forwarded-proto is not set', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/'
             };
@@ -228,7 +196,7 @@ describe('redirectHttpToHttps', function () {
 
     describe('disabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -244,7 +212,7 @@ describe('redirectHttpToHttps', function () {
                 }
             });
 
-            var plugin = {
+            const plugin = {
                 register: require('..'),
                 options: {
                     redirectHttpToHttps: false
@@ -256,7 +224,7 @@ describe('redirectHttpToHttps', function () {
 
         it('does not redirect to https even when x-forwarded-proto is http', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -279,7 +247,7 @@ describe('remoteAddressToClientIp', function () {
 
     describe('enabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -300,7 +268,7 @@ describe('remoteAddressToClientIp', function () {
 
         it('sets request.info.remoteAddress to the value of x-forwarded-for', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -319,7 +287,7 @@ describe('remoteAddressToClientIp', function () {
 
         it('does not change request.info.remoteAddress if there is no x-forwarded-for', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/'
             };
@@ -336,7 +304,7 @@ describe('remoteAddressToClientIp', function () {
 
     describe('disabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -352,7 +320,7 @@ describe('remoteAddressToClientIp', function () {
                 }
             });
 
-            var plugin = {
+            const plugin = {
                 register: require('..'),
                 options: {
                     remoteAddressToClientIp: false
@@ -364,7 +332,7 @@ describe('remoteAddressToClientIp', function () {
 
         it('does not change request.info.remoteAddress even when x-forwarded-for is set', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -389,7 +357,7 @@ describe('remotePortToClientPort', function () {
 
     describe('enabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -410,7 +378,7 @@ describe('remotePortToClientPort', function () {
 
         it('sets request.info.remotePort to the value of x-forwarded-for', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {
@@ -429,7 +397,7 @@ describe('remotePortToClientPort', function () {
 
         it('does not change request.info.remotePort if there is no x-forwarded-port', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/'
             };
@@ -446,7 +414,7 @@ describe('remotePortToClientPort', function () {
 
     describe('disabled', function () {
 
-        var server;
+        let server;
 
         before(function (done) {
 
@@ -462,7 +430,7 @@ describe('remotePortToClientPort', function () {
                 }
             });
 
-            var plugin = {
+            const plugin = {
                 register: require('..'),
                 options: {
                     remotePortToClientPort: false
@@ -474,7 +442,7 @@ describe('remotePortToClientPort', function () {
 
         it('does not change request.info.remotePort even when x-forwarded-port is set', function (done) {
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'GET',
                 url: '/',
                 headers: {

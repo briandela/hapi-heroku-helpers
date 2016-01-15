@@ -1,11 +1,15 @@
 {
   "name": "hapi-heroku-helpers",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "repository": "git://github.com/briandela/hapi-heroku-helpers",
   "description": "hapi.js plugin which provides some basic functionality which can be useful when running a hapi.js site on Heroku.",
   "main": "lib/index.js",
+  "author": "Brian Delahunty <brian@briandela.com>",
   "scripts": {
     "test": "lab -r lcov | node node_modules/coveralls/bin/coveralls.js; lab -a code -v -t 100 -L"
+  },
+  "engines": {
+    "node": ">= 4.x.x"
   },
   "keywords": [
     "hapi",
@@ -17,16 +21,16 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hoek": "^2.14.0",
-    "joi": "^6.6.1"
+    "hoek": "^3.0.4",
+    "joi": "^7.2.0"
   },
   "devDependencies": {
-    "code": "^1.x.x",
+    "code": "^2.x.x",
     "coveralls": "^2.x.x",
-    "hapi": ">= 9.x.x",
-    "lab": "^5.x.x"
+    "hapi": ">=11.x.x",
+    "lab": "^8.x.x"
   },
   "peerDependencies": {
-    "hapi": ">= 9.x.x"
+    "hapi": ">=11.x.x"
   }
 }

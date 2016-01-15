@@ -1,8 +1,10 @@
 # Hapi Heroku Helpers #
 
-[![Build Status](https://travis-ci.org/briandela/hapi-heroku-helpers.svg?branch=master)](https://travis-ci.org/briandela/hapi-heroku-helpers) [![Coverage Status](https://img.shields.io/coveralls/briandela/hapi-heroku-helpers.svg)](https://coveralls.io/r/briandela/hapi-heroku-helpers) [![npm version](https://badge.fury.io/js/hapi-heroku-helpers.svg)](http://badge.fury.io/js/hapi-heroku-helpers) [![Dependencies Up To Date](https://david-dm.org/briandela/hapi-heroku-helpers.svg?style=flat)](https://david-dm.org/briandela/hapi-heroku-helpers)
+[![Build Status](https://travis-ci.org/briandela/hapi-heroku-helpers.svg?branch=master)](https://travis-ci.org/briandela/hapi-heroku-helpers) [![Coverage Status](https://coveralls.io/repos/briandela/hapi-heroku-helpers/badge.svg?branch=master&service=github)](https://coveralls.io/github/briandela/hapi-heroku-helpers?branch=master) [![npm version](https://badge.fury.io/js/hapi-heroku-helpers.svg)](http://badge.fury.io/js/hapi-heroku-helpers) [![Dependencies Up To Date](https://david-dm.org/briandela/hapi-heroku-helpers.svg?style=flat)](https://david-dm.org/briandela/hapi-heroku-helpers)
 
 hapi.js plugin which provides additional functionality which can be useful when running a hapi.js site on Heroku.
+
+**Note:** Version 2 and above of this module requires Node 4 or above and Hapi 11 or above.
 
 ### Heroku ###
 The Heroku platform automatically routes HTTP requests sent to your app’s hostname(s) to your web dynos. Inbound requests are received by a load balancer that offers SSL termination. From there they are passed directly to a set of routers which routes the request to your application. Think of it as a reverse proxy.
@@ -32,9 +34,9 @@ The following options are available:
 ### Usage
 
 ``` javascript
-var Hapi = require('hapi');
+const Hapi = require('hapi');
 
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection();
 
 server.register(require('hapi-heroku-helpers'), function (err) {
