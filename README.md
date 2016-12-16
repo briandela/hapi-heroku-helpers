@@ -19,6 +19,8 @@ Your hapi site will see the incoming HTTP request as coming from the IP address 
 #### Client Port ####
 Your hapi site will see the incoming HTTP request as coming from the PORT that hapi is running on inside the Heroku platform (which is rarely the port your site is running on - i.e. 80 or 443). In the majority of cases you most likely are interested in the port that the client is connecting on. By default this plugin sets `request.info.remotePort` to the value of the `x-forwarded-port` header which Heroku sets to the originating port (see `remotePortToClientPort` setting)
 
+#### Request ID ####
+Your hapi site will generate an unique identifier for each incoming request. By default this plugin sets the `request.id` to the value of the `x-request-id` header which Heroku already generates for each incoming request (see `mapRequestId` setting)
 
 ### Options
 
@@ -30,6 +32,7 @@ The following options are available:
 
 * `remotePortToClientPort`: if `true`, will set `request.info.remoteAddress` to the value of the `x-forwarded-port` header if it exists and is non-empty. Heroku set the `x-forwarded-port` header to the originating port of the HTTP request (example: 443). Defaults to `true`.
 
+* `mapRequestId`: if `true`, will set `request.id` to the value of the `x-request-id` header if it exists and is non-empty. Heroku set the `x-request-id` header to an unique identifier per request. This setting allows you to map any request logged by Heroku to a request received by your application. Defaults to `true`.
 
 ### Usage
 
