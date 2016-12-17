@@ -21,16 +21,13 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hoek": "^3.0.4",
-    "joi": "^7.2.0"
+    "hoek": "^4.1.0",
+    "joi": "^10.0.6"
   },
   "devDependencies": {
-    "code": "^2.x.x",
+    "code": "^4.x.x",
     "coveralls": "^2.x.x",
-    "hapi": ">=11.x.x",
-    "lab": "^8.x.x"
-  },
-  "peerDependencies": {
-    "hapi": ">=11.x.x"
+    "hapi": ">=16.x.x",
+    "lab": "^11.x.x"
   }
 }
