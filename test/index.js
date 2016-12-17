@@ -460,3 +460,113 @@ describe('remotePortToClientPort', function () {
         });
     });
 });
+
+describe('mapRequestId', function () {
+
+    describe('enabled', function () {
+
+        let server;
+
+        before(function (done) {
+
+            server = new Hapi.Server();
+            server.connection();
+
+            server.route({
+                method: 'GET',
+                path: '/',
+                handler: function (request, reply) {
+
+                    return reply(request.id);
+                }
+            });
+
+            server.register(require('..'), done);
+        });
+
+        it('sets request.id to the value of x-request-id', function (done) {
+
+            const requestOptions = {
+                method: 'GET',
+                url: '/',
+                headers: {
+                    'x-request-id': '1234'
+                }
+            };
+
+            server.inject(requestOptions, function (res) {
+
+                expect(res.request.id).to.equal('1234');
+                expect(res.statusCode).to.equal(200);
+                expect(res.result).to.equal('1234');
+
+                done();
+            });
+        });
+
+        it('does not change request.id if there is no x-request-id', function (done) {
+
+            const requestOptions = {
+                method: 'GET',
+                url: '/'
+            };
+
+            server.inject(requestOptions, function (res) {
+
+                expect(res.statusCode).to.equal(200);
+                expect(res.result).to.equal(res.request.id);
+
+                done();
+            });
+        });
+    });
+
+    describe('disabled', function () {
+
+        let server;
+
+        before(function (done) {
+
+            server = new Hapi.Server();
+            server.connection();
+
+            server.route({
+                method: 'GET',
+                path: '/',
+                handler: function (request, reply) {
+
+                    return reply(request.id);
+                }
+            });
+
+            const plugin = {
+                register: require('..'),
+                options: {
+                    mapRequestId: false
+                }
+            };
+
+            server.register(plugin, done);
+        });
+
+        it('does not change request.id even when x-request-id is set', function (done) {
+
+            const requestOptions = {
+                method: 'GET',
+                url: '/',
+                headers: {
+                    'x-request-id': '1234'
+                }
+            };
+
+            server.inject(requestOptions, function (res) {
+
+                expect(res.request.id).to.not.equal('1234');
+                expect(res.statusCode).to.equal(200);
+                expect(res.result).to.equal(res.request.id);
+
+                done();
+            });
+        });
+    });
+});
